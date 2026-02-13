@@ -1,7 +1,6 @@
 
 import React from 'react';
-// Changed import from react-router-dom to react-router
-import { useLocation, Link } from 'react-router';
+import { useLocation, Link } from 'react-router-dom';
 
 const pathMap: Record<string, string> = {
   admin: 'SaaS Admin',

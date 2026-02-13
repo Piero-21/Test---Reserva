@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { ProfessionalProfile } from '../../domain/types';
 
 export const ProfessionalCard: React.FC<{ prof: ProfessionalProfile }> = ({ prof }) => {

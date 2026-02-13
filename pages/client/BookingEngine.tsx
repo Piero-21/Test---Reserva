@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams, useNavigate, Link } from 'react-router';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import { apiClient } from '../../api';
 import { ProfessionalProfile, Service } from '../../domain/types';
@@ -88,7 +88,6 @@ const BookingEngine: React.FC = () => {
       });
       
       setIsSuccess(true);
-      // Redirigir solo si el usuario está autenticado, sino mostrar éxito local
       if (user) {
         setTimeout(() => navigate('/client/dashboard'), 2000);
       }
@@ -141,9 +140,8 @@ const BookingEngine: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 space-y-6">
-          {/* STEP 1: SERVICE */}
           {step === 1 && (
-            <div className="space-y-4 animate-in slide-in-from-right duration-300">
+            <div className="space-y-4 animate-fade-in">
                <h3 className="text-xl font-bold dark:text-white mb-6">¿Qué servicio necesitas?</h3>
                {services.map(s => (
                  <button 
@@ -161,9 +159,8 @@ const BookingEngine: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 2: DATE & TIME */}
           {step === 2 && (
-            <div className="space-y-8 animate-in slide-in-from-right duration-300">
+            <div className="space-y-8 animate-fade-in">
                <div>
                   <h3 className="text-xl font-bold dark:text-white mb-4">Selecciona Fecha</h3>
                   <input 
@@ -198,9 +195,8 @@ const BookingEngine: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 3: CONTACT INFO */}
           {step === 3 && (
-            <div className="space-y-6 animate-in slide-in-from-right duration-300">
+            <div className="space-y-6 animate-fade-in">
                <h3 className="text-xl font-bold dark:text-white mb-6">Detalles de Contacto</h3>
                {user ? (
                  <div className="p-8 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-3xl">
@@ -240,9 +236,8 @@ const BookingEngine: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 4: CONFIRMATION */}
           {step === 4 && (
-            <div className="space-y-8 animate-in zoom-in duration-300">
+            <div className="space-y-8 animate-fade-in">
                <div className="p-10 bg-indigo-600 rounded-[3rem] text-white text-center shadow-2xl">
                   <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">✨</div>
                   <h3 className="text-3xl font-black mb-2">Casi listo</h3>

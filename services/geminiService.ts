@@ -1,12 +1,22 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
-// Fixed: Using Appointment from domain/types to match professional dashboard data structures
+import { GoogleGenAI } from "@google/genai";
 import { Appointment } from "../domain/types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Verificación de seguridad para evitar errores de "process is not defined" en el navegador
+const getApiKey = () => {
+  try {
+    return process.env.API_KEY || "";
+  } catch (e) {
+    return "";
+  }
+};
 
-// Fixed: Updated signature to accept domain Appointment type and adjusted prompt fields
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
+
 export const getNoShowPrediction = async (appointment: Appointment): Promise<string> => {
+  const apiKey = getApiKey();
+  if (!apiKey) return "API Key no configurada.";
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
@@ -17,7 +27,6 @@ export const getNoShowPrediction = async (appointment: Appointment): Promise<str
         thinkingConfig: { thinkingBudget: 0 }
       }
     });
-    // Accessing .text property directly as per Gemini API guidelines
     return response.text || "No se pudo generar predicción.";
   } catch (error) {
     console.error("Gemini Error:", error);
@@ -26,13 +35,15 @@ export const getNoShowPrediction = async (appointment: Appointment): Promise<str
 };
 
 export const getBusinessInsights = async (tenantName: string, metrics: any): Promise<string> => {
+  const apiKey = getApiKey();
+  if (!apiKey) return "Configura la API Key para obtener insights.";
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `Eres un consultor experto en negocios. El negocio ${tenantName} tiene las siguientes métricas: ${JSON.stringify(metrics)}. 
       Proporciona 3 consejos estratégicos breves para aumentar las reservas y reducir cancelaciones. Responde en español.`,
     });
-    // Accessing .text property directly as per Gemini API guidelines
     return response.text || "Sin insights disponibles.";
   } catch (error) {
     return "Error al generar insights de negocio.";

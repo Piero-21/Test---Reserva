@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link } from 'react-router-dom';
 import { apiClient } from '../../api';
 import { ProfessionalProfile, Service } from '../../domain/types';
 

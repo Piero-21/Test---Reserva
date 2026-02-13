@@ -1,7 +1,6 @@
 
 import React from 'react';
-// Changed import from react-router-dom to react-router to fix missing export error
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { UserRole, SubscriptionStatus } from '../domain/types';
 import { Icons } from '../constants';
@@ -28,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     ],
     [UserRole.CLIENT]: [
       { path: '/client/dashboard', name: 'Mis Reservas', icon: Icons.Calendar },
-      { path: '/client/book', name: 'Nuevo Servicio', icon: Icons.Dashboard },
+      { path: '/directory', name: 'Explorar', icon: Icons.Dashboard },
     ],
   };
 
@@ -42,7 +41,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Mobile Overlay */}
       {isOpen && (
         <div 
           className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"

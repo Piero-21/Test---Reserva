@@ -1,12 +1,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../auth/ContextWrapper'; // Nota: Si el path es distinto, ajustarlo. Basado en estructura previa:
-// El archivo original importaba de '../auth/AuthContext'
-import { useAuth as useAuthHook } from '../auth/AuthContext';
+import { useAuth } from '../auth/AuthContext';
 
 const Landing: React.FC = () => {
-  const { user } = useAuthHook();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950">
@@ -38,7 +36,7 @@ const Landing: React.FC = () => {
         </div>
       </nav>
 
-      {/* Hero Section - El mensaje principal */}
+      {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-8 py-20 lg:py-32 flex flex-col lg:flex-row items-center gap-16">
         <div className="lg:w-1/2">
           <div className="inline-block px-4 py-1.5 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-full text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest mb-6">
@@ -54,15 +52,6 @@ const Landing: React.FC = () => {
             <Link to="/register" className="px-10 py-5 bg-slate-900 dark:bg-white dark:text-slate-950 text-white font-black rounded-2xl hover:scale-105 transition-all text-center shadow-2xl text-lg uppercase tracking-tight">
               Crear mi Espacio Ahora
             </Link>
-          </div>
-          
-          <div className="mt-12 flex items-center gap-4 text-slate-400 font-bold uppercase text-[10px] tracking-widest">
-             <span>Líder en:</span>
-             <div className="flex gap-4 opacity-50">
-                <span className="hover:opacity-100 transition-opacity">Salud</span>
-                <span className="hover:opacity-100 transition-opacity">Derecho</span>
-                <span className="hover:opacity-100 transition-opacity">Bienestar</span>
-             </div>
           </div>
         </div>
         
