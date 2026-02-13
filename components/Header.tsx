@@ -13,7 +13,8 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    // Redirigir a Landing Page para un flujo natural de salida
+    navigate('/');
   };
 
   return (

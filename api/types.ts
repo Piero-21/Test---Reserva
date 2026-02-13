@@ -15,11 +15,19 @@ export interface AuthResponse {
   professional?: ProfessionalProfile;
 }
 
+export interface DemoAccount {
+  email: string;
+  password: string;
+  label: string;
+  testId: string;
+}
+
 export interface IApiClient {
   // Auth
   login(email: string, password: string): Promise<AuthResponse>;
   register(data: any): Promise<AuthResponse>;
   logout(): Promise<void>;
+  getDemoAccounts(): Promise<DemoAccount[]>;
   
   // Directory & Profiles
   getProfessionals(search?: string, specialty?: string): Promise<ProfessionalProfile[]>;

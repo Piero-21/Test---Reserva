@@ -1,5 +1,5 @@
 
-import { IApiClient, AuthResponse } from './types';
+import { IApiClient, AuthResponse, DemoAccount } from './types';
 import { 
   User, 
   UserRole, 
@@ -30,10 +30,10 @@ export class MockApiClient implements IApiClient {
     if (!data) {
       const initial: MockDB = {
         users: [
-          { id: 'u1', name: 'Admin SaaS', email: 'admin@reservapro.com', role: UserRole.SUPER_ADMIN },
-          { id: 'u2', name: 'Dr. Roberto Gomez', email: 'roberto@saludplus.com', role: UserRole.PROFESSIONAL },
-          { id: 'u3', name: 'Juan Perez', email: 'juan@gmail.com', role: UserRole.CLIENT },
-          { id: 'u4', name: 'Lic. Martha Sanchez', email: 'martha@care.com', role: UserRole.PROFESSIONAL },
+          { id: 'u1', name: 'Admin SaaS', email: 'admin@reservapro.com', role: UserRole.SUPER_ADMIN, password: 'adminpassword' },
+          { id: 'u2', name: 'Dr. Roberto Gomez', email: 'roberto@saludplus.com', role: UserRole.PROFESSIONAL, password: 'propassword' },
+          { id: 'u3', name: 'Juan Perez', email: 'juan@gmail.com', role: UserRole.CLIENT, password: 'clientpassword' },
+          { id: 'u4', name: 'Lic. Martha Sanchez', email: 'martha@care.com', role: UserRole.PROFESSIONAL, password: 'propassword' },
         ],
         professionals: [
           { id: 'p1', userId: 'u2', specialty: 'Medicina General', bio: 'Experto en salud familiar con más de 15 años de experiencia.', subscriptionStatus: SubscriptionStatus.ACTIVE, subscriptionPlan: SubscriptionPlan.PRO, isVisibleInDirectory: true, businessName: 'Clinica Salud Plus', location: 'Centro Médico, Local 4' },
@@ -72,8 +72,8 @@ export class MockApiClient implements IApiClient {
     const user = db.users.find(u => u.email === email);
     if (!user) throw new Error('Credenciales inválidas para la demo.');
     
-    // Real-ish password check for E2E tests
-    if (password !== 'password123') {
+    // Validación contra el password almacenado en el mock
+    if (user.password !== password) {
       throw new Error('Contraseña incorrecta.');
     }
     
@@ -88,7 +88,13 @@ export class MockApiClient implements IApiClient {
   async register(data: any): Promise<AuthResponse> {
     const db = this.getDB();
     const userId = `u${Date.now()}`;
-    const newUser: User = { id: userId, name: data.name, email: data.email, role: data.role };
+    const newUser: User = { 
+      id: userId, 
+      name: data.name, 
+      email: data.email, 
+      role: data.role,
+      password: data.password // Se guarda el password enviado en el registro
+    };
     db.users.push(newUser);
 
     let professional: ProfessionalProfile | undefined;
@@ -112,6 +118,14 @@ export class MockApiClient implements IApiClient {
   }
 
   async logout(): Promise<void> { return Promise.resolve(); }
+
+  async getDemoAccounts(): Promise<DemoAccount[]> {
+    return [
+      { email: 'admin@reservapro.com', password: 'adminpassword', label: 'Admin SaaS', testId: 'demo-admin' },
+      { email: 'roberto@saludplus.com', password: 'propassword', label: 'Profesional', testId: 'demo-pro' },
+      { email: 'juan@gmail.com', password: 'clientpassword', label: 'Cliente', testId: 'demo-client' },
+    ];
+  }
 
   async getProfessionals(search?: string, specialty?: string): Promise<ProfessionalProfile[]> {
     const db = this.getDB();

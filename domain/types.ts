@@ -31,6 +31,7 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  password?: string; // Campo para validación en el mock/backend
   avatar?: string;
   tenantId?: string;
 }

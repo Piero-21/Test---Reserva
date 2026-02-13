@@ -7,7 +7,6 @@ interface AuthContextType {
   user: User | null;
   professional: ProfessionalProfile | null;
   login: (email: string, pass: string) => Promise<UserRole>;
-  // Fix: Added register method to AuthContext interface to resolve error in Register page
   register: (data: any) => Promise<UserRole>;
   logout: () => void;
   isLoading: boolean;
@@ -53,7 +52,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return res.user.role;
   };
 
-  // Fix: Implemented register method in AuthProvider to satisfy interface and handle registration flow
   const register = async (data: any): Promise<UserRole> => {
     const res = await apiClient.register(data);
     setUser(res.user);
@@ -73,7 +71,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setProfessional(null);
     localStorage.removeItem(SESSION_KEY);
     apiClient.logout();
-    window.location.href = '#/login';
   };
 
   return (

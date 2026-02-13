@@ -25,6 +25,7 @@ const BookingEngine: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (professionalId) loadProfessional(professionalId);
@@ -38,29 +39,37 @@ const BookingEngine: React.FC = () => {
 
   const loadProfessional = async (id: string) => {
     setLoading(true);
-    const [p, s] = await Promise.all([
-      apiClient.getProfessionalById(id),
-      apiClient.getProfessionalServices(id)
-    ]);
-    setProf(p);
-    setServices(s);
-    
-    // Auto-select service if in URL
-    const serviceId = searchParams.get('service');
-    if (serviceId) {
-      const found = s.find(svc => svc.id === serviceId);
-      if (found) {
-        setSelectedService(found);
-        setStep(2);
+    try {
+      const [p, s] = await Promise.all([
+        apiClient.getProfessionalById(id),
+        apiClient.getProfessionalServices(id)
+      ]);
+      setProf(p);
+      setServices(s);
+      
+      const serviceId = searchParams.get('service');
+      if (serviceId) {
+        const found = s.find(svc => svc.id === serviceId);
+        if (found) {
+          setSelectedService(found);
+          setStep(2);
+        }
       }
+    } catch (err) {
+      setError("No se pudo cargar la información del profesional.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const loadAvailability = async (id: string, date: string) => {
-    const times = await apiClient.getAvailableTimes(id, date);
-    setAvailableTimes(times);
-    setSelectedTime(null);
+    try {
+      const times = await apiClient.getAvailableTimes(id, date);
+      setAvailableTimes(times);
+      setSelectedTime(null);
+    } catch (err) {
+      setError("Error al consultar disponibilidad.");
+    }
   };
 
   const handleConfirm = async () => {
@@ -77,19 +86,39 @@ const BookingEngine: React.FC = () => {
         clientId: user?.id,
         guestInfo: !user ? guestInfo : undefined
       });
-      navigate('/client/dashboard'); // Or a generic success page
+      
+      setIsSuccess(true);
+      // Redirigir solo si el usuario está autenticado, sino mostrar éxito local
+      if (user) {
+        setTimeout(() => navigate('/client/dashboard'), 2000);
+      }
     } catch (err: any) {
-      setError(err.message);
-    } finally {
+      setError(err.message || "Ocurrió un error al procesar tu reserva.");
       setProcessing(false);
     }
   };
 
-  if (loading) return <div className="p-20 text-center font-bold animate-pulse">Iniciando sistema de reservas...</div>;
+  if (loading) return <div className="p-20 text-center font-bold animate-pulse text-indigo-600 uppercase tracking-widest text-xs">Iniciando sistema de reservas...</div>;
+
+  if (isSuccess) {
+    return (
+      <div className="max-w-2xl mx-auto py-20 text-center animate-fade-in">
+        <div className="w-24 h-24 bg-emerald-500 text-white rounded-[2.5rem] flex items-center justify-center text-4xl mx-auto mb-8 shadow-2xl shadow-emerald-500/20 animate-bounce">✓</div>
+        <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight mb-4">¡Reserva Exitosa!</h2>
+        <p className="text-slate-500 dark:text-slate-400 font-medium text-lg mb-10">
+          Tu cita ha sido registrada correctamente. {user ? 'Redirigiendo a tu panel...' : 'Recibirás un recordatorio pronto.'}
+        </p>
+        {!user && (
+          <Link to="/" className="px-10 py-4 bg-slate-900 dark:bg-indigo-600 text-white font-black rounded-2xl shadow-xl hover:scale-105 transition-all">
+            Volver al Inicio
+          </Link>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Header Info */}
       <div className="mb-10 flex items-center justify-between">
         <div>
            <Link to={`/p/${professionalId}`} className="text-sm font-bold text-slate-400 hover:text-indigo-600 transition-colors">← Volver al Perfil</Link>
@@ -105,7 +134,7 @@ const BookingEngine: React.FC = () => {
       </div>
 
       {error && (
-        <div className="mb-8 p-6 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 text-rose-600 rounded-3xl font-bold animate-shake">
+        <div data-cy="booking-error" className="mb-8 p-6 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 text-rose-600 rounded-3xl font-bold animate-shake">
            ⚠️ {error}
         </div>
       )}
@@ -169,7 +198,7 @@ const BookingEngine: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 3: CONTACT INFO (if guest) */}
+          {/* STEP 3: CONTACT INFO */}
           {step === 3 && (
             <div className="space-y-6 animate-in slide-in-from-right duration-300">
                <h3 className="text-xl font-bold dark:text-white mb-6">Detalles de Contacto</h3>

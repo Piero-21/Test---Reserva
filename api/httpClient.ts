@@ -1,5 +1,5 @@
 
-import { IApiClient, AuthResponse } from './types';
+import { IApiClient, AuthResponse, DemoAccount } from './types';
 import { 
   User, 
   ProfessionalProfile, 
@@ -54,6 +54,11 @@ export class HttpApiClient implements IApiClient {
   async logout(): Promise<void> {
     // Usually a token invalidation endpoint or just local cleanup
     return Promise.resolve();
+  }
+
+  // Fixed: Implemented getDemoAccounts to satisfy IApiClient interface
+  async getDemoAccounts(): Promise<DemoAccount[]> {
+    return this.request<DemoAccount[]>('/auth/demo-accounts');
   }
 
   async getProfessionals(search?: string, specialty?: string): Promise<ProfessionalProfile[]> {

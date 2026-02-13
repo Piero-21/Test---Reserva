@@ -24,10 +24,13 @@ export const Guard: React.FC<GuardProps> = ({ children, allowedRoles }) => {
     );
   }
 
+  // Si no hay usuario, redirigir a la Landing Page (/) por defecto
+  // Esto asegura que al cerrar sesión desde una ruta protegida, el usuario termine en la Landing
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
+  // Si hay usuario pero su rol no está permitido, también a la Landing
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }

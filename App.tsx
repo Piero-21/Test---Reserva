@@ -26,21 +26,22 @@ const App: React.FC = () => {
     <AuthProvider>
       <HashRouter>
         <Routes>
-          {/* Public Area */}
+          {/* Landing Page: El punto de inicio absoluto para cualquier visitante nuevo */}
           <Route path="/" element={<Landing />} />
-          <Route element={<ClientLayout />}>
+          
+          {/* Rutas de Autenticación */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Área de Cliente: PROTEGIDA. Requiere login para ver el directorio o reservar */}
+          <Route element={<Guard><ClientLayout /></Guard>}>
              <Route path="/directory" element={<Directory />} />
              <Route path="/p/:professionalId" element={<PublicProfile />} />
              <Route path="/p/:professionalId/book" element={<BookingEngine />} />
-             <Route path="/client/dashboard" element={
-               <Guard allowedRoles={[UserRole.CLIENT]}><ClientDashboard /></Guard>
-             } />
+             <Route path="/client/dashboard" element={<ClientDashboard />} />
           </Route>
           
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          
-          {/* Internal: Professional Panel */}
+          {/* Área Profesional: PROTEGIDA para rol PROFESSIONAL */}
           <Route path="/pro" element={
             <Guard allowedRoles={[UserRole.PROFESSIONAL]}>
               <DashboardLayout />
@@ -54,7 +55,7 @@ const App: React.FC = () => {
             <Route path="subscription" element={<SubscriptionPage />} />
           </Route>
 
-          {/* Internal: SaaS SuperAdmin */}
+          {/* Área SuperAdmin: PROTEGIDA para rol SUPER_ADMIN */}
           <Route path="/admin" element={
             <Guard allowedRoles={[UserRole.SUPER_ADMIN]}>
               <DashboardLayout />
@@ -65,6 +66,7 @@ const App: React.FC = () => {
             <Route path="tenants" element={<SuperAdminDashboard />} />
           </Route>
 
+          {/* Redirección por defecto a la Landing */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </HashRouter>
