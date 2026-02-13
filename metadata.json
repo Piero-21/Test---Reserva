@@ -1,0 +1,8 @@
+{
+  "name": "ReservaPro SaaS",
+  "description": "A high-performance B2B Multi-Tenant Professional Services Booking Platform with AI-powered no-show predictions and comprehensive tenant isolation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
