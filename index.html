@@ -1,137 +1,156 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" class="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReservaPro SaaS - Enterprise Professional Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <script>
-        tailwind.config = {
-          darkMode: 'class',
-          theme: {
-            extend: {
-              fontFamily: {
-                sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', "Inter", "sans-serif"],
+            },
+            colors: {
+              indigo: {
+                50: "#f5f7ff",
+                100: "#ebf0fe",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                950: "#020617",
               },
-              colors: {
-                indigo: {
-                  50: '#f5f7ff',
-                  100: '#ebf0fe',
-                  500: '#6366f1',
-                  600: '#4f46e5',
-                  700: '#4338ca',
-                  950: '#020617',
-                },
-                slate: {
-                  950: '#020617',
-                }
+              slate: {
+                950: "#020617",
               },
-              animation: {
-                'fade-in': 'fadeIn 0.5s ease-out',
-                'slide-up': 'slideUp 0.4s ease-out',
-                'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+            },
+            animation: {
+              "fade-in": "fadeIn 0.5s ease-out",
+              "slide-up": "slideUp 0.4s ease-out",
+              shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) both",
+            },
+            keyframes: {
+              fadeIn: { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
+              slideUp: {
+                "0%": { transform: "translateY(10px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
               },
-              keyframes: {
-                fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                slideUp: { '0%': { transform: 'translateY(10px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
-                shake: {
-                  '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
-                  '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
-                  '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
-                  '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
-                }
-              }
-            }
-          }
-        }
+              shake: {
+                "10%, 90%": { transform: "translate3d(-1px, 0, 0)" },
+                "20%, 80%": { transform: "translate3d(2px, 0, 0)" },
+                "30%, 50%, 70%": { transform: "translate3d(-4px, 0, 0)" },
+                "40%, 60%": { transform: "translate3d(4px, 0, 0)" },
+              },
+            },
+          },
+        },
+      };
     </script>
     <style type="text/css">
-        :root {
-            --bg-main: #f8fafc;
-            --bg-surface: #ffffff;
-            --border-subtle: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --accent: #4f46e5;
-            --accent-soft: rgba(79, 70, 229, 0.08);
-        }
+      :root {
+        --bg-main: #f8fafc;
+        --bg-surface: #ffffff;
+        --border-subtle: #e2e8f0;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --accent: #4f46e5;
+        --accent-soft: rgba(79, 70, 229, 0.08);
+      }
 
-        .dark {
-            --bg-main: #020617;
-            --bg-surface: #0f172a;
-            --border-subtle: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #6366f1;
-            --accent-soft: rgba(99, 102, 241, 0.1);
-        }
+      .dark {
+        --bg-main: #020617;
+        --bg-surface: #0f172a;
+        --border-subtle: #1e293b;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent: #6366f1;
+        --accent-soft: rgba(99, 102, 241, 0.1);
+      }
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            -webkit-font-smoothing: antialiased;
-        }
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        transition:
+          background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        -webkit-font-smoothing: antialiased;
+      }
 
-        .ui-card {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 1.5rem;
-            transition: all 0.2s ease-in-out;
-        }
+      .ui-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: 1.5rem;
+        transition: all 0.2s ease-in-out;
+      }
 
-        .ui-input {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-subtle);
-            border-radius: 1rem;
-            color: var(--text-main);
-            padding: 0.75rem 1rem;
-            width: 100%;
-            transition: all 0.2s;
-        }
+      .ui-input {
+        background-color: var(--bg-main);
+        border: 1px solid var(--border-subtle);
+        border-radius: 1rem;
+        color: var(--text-main);
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: all 0.2s;
+      }
 
-        .ui-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-soft);
-            background-color: var(--bg-surface);
-        }
+      .ui-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+        background-color: var(--bg-surface);
+      }
 
-        /* Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .dark .glass {
-            background: rgba(15, 23, 42, 0.7);
-        }
+      /* Glassmorphism */
+      .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .dark .glass {
+        background: rgba(15, 23, 42, 0.7);
+      }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 20px; border: 2px solid transparent; background-clip: content-box; }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 20px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #334155;
+      }
     </style>
     <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom": "https://esm.sh/react-dom@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react-router": "https://esm.sh/react-router@^7.13.0",
-    "cypress": "https://esm.sh/cypress@^15.10.0"
-  }
-}
-</script>
-</head>
-<body class="selection:bg-indigo-500/20 selection:text-indigo-600">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@^19.2.4",
+          "react-dom": "https://esm.sh/react-dom@^19.2.4",
+          "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+          "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+          "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+          "react/": "https://esm.sh/react@^19.2.4/",
+          "react-router": "https://esm.sh/react-router@^7.13.0",
+          "cypress": "https://esm.sh/cypress@^15.10.0"
+        }
+      }
+    </script>
+  </head>
+  <body class="selection:bg-indigo-500/20 selection:text-indigo-600">
     <div id="root"></div>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
