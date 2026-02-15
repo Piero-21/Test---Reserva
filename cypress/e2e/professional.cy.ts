@@ -1,12 +1,23 @@
 
-describe('Professional Module Tests', () => {
+describe('Pruebas del módulo profesional', () => {
+  const goToHash = (hash: string) => {
+    cy.window().then((win) => {
+      win.location.hash = hash;
+    });
+    cy.location('hash').should('eq', hash);
+  };
+
   beforeEach(() => {
     cy.resetMockDB();
+    cy.intercept('POST', '**/generativelanguage.googleapis.com/**', {
+      statusCode: 200,
+      body: {},
+    });
     cy.loginAsProfessional();
   });
 
   it('6) Crear servicio => aparece en lista', () => {
-    cy.visit('/#/pro/services');
+    goToHash('#/pro/services');
     cy.get('[data-cy="create-service-btn"]').click();
     cy.get('[data-cy="service-name-input"]').type('Servicio Cypress');
     cy.get('[data-cy="service-desc-input"]').type('Desc');
@@ -18,7 +29,7 @@ describe('Professional Module Tests', () => {
   });
 
   it('7) Crear cliente => aparece en lista', () => {
-    cy.visit('/#/pro/clients');
+    goToHash('#/pro/clients');
     cy.contains('Agregar Cliente').click();
     cy.get('input[placeholder="Ej: Juan Pérez"]').type('Nuevo Cliente Cypress');
     cy.get('input[placeholder="+54 9 11..."]').type('12345678');
@@ -28,10 +39,10 @@ describe('Professional Module Tests', () => {
   });
 
   it('8) Crear reserva manual => aparece en agenda', () => {
-    cy.visit('/#/pro/agenda');
+    goToHash('#/pro/agenda');
     cy.get('[data-cy="open-manual-booking-btn"]').click();
     cy.get('[data-cy="manual-client-select"]').select('Juan Perez');
-    cy.get('[data-cy="manual-service-select"]').select('Consulta General ($50)');
+    cy.get('[data-cy="manual-service-select"]').select('s1');
     cy.get('[data-cy="manual-time-input"]').type('11:00');
     cy.get('[data-cy="manual-submit-btn"]').click();
     

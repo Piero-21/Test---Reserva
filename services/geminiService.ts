@@ -6,7 +6,15 @@ const getApiKey = () => {
   return import.meta.env.VITE_GEMINI_API_KEY || "";
 };
 
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
+// Inicializar solo si hay API key válida
+let ai: GoogleGenAI | null = null;
+
+const getAiClient = () => {
+  if (!ai && getApiKey()) {
+    ai = new GoogleGenAI({ apiKey: getApiKey() });
+  }
+  return ai;
+};
 
 export const getNoShowPrediction = async (
   appointment: Appointment,
@@ -14,8 +22,11 @@ export const getNoShowPrediction = async (
   const apiKey = getApiKey();
   if (!apiKey) return "API Key no configurada.";
 
+  const aiClient = getAiClient();
+  if (!aiClient) return "API Key inválida.";
+
   try {
-    const response = await ai.models.generateContent({
+    const response = await aiClient.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `Analiza la probabilidad de que el paciente con ID ${appointment.clientId} asista a su cita de servicio con ID ${appointment.serviceId} el día ${appointment.date} a las ${appointment.startTime}. 
       Históricamente, este tipo de servicio tiene un 15% de cancelaciones. 
@@ -38,8 +49,11 @@ export const getBusinessInsights = async (
   const apiKey = getApiKey();
   if (!apiKey) return "Configura la API Key para obtener insights.";
 
+  const aiClient = getAiClient();
+  if (!aiClient) return "API Key inválida.";
+
   try {
-    const response = await ai.models.generateContent({
+    const response = await aiClient.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `Eres un consultor experto en negocios. El negocio ${tenantName} tiene las siguientes métricas: ${JSON.stringify(metrics)}. 
       Proporciona 3 consejos estratégicos breves para aumentar las reservas y reducir cancelaciones. Responde en español.`,

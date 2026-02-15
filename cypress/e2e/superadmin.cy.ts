@@ -1,15 +1,15 @@
 
-describe('Super Admin Dashboard', () => {
+describe('Panel de superadministrador', () => {
   beforeEach(() => {
     cy.loginAsSuperAdmin();
   });
 
-  it('monitors global metrics', () => {
+  it('monitorea métricas globales', () => {
     cy.contains('Total Tenants').should('be.visible');
     cy.contains('Ingresos Mensuales').should('be.visible');
   });
 
-  it('manages professional subscriptions', () => {
+  it('gestiona suscripciones de profesionales', () => {
     cy.contains('Clinica Salud Plus').parents('tr').within(() => {
       cy.get('span').contains('ACTIVE').should('be.visible');
       cy.contains('Suspender').click();

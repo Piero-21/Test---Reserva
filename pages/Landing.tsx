@@ -58,11 +58,12 @@ const Landing: React.FC = () => {
         <div className="lg:w-1/2 relative animate-fade-in">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-violet-600/20 blur-[120px] rounded-full"></div>
           <div className="bg-white dark:bg-slate-900 rounded-[40px] p-2 shadow-2xl border border-white dark:border-slate-800 transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
-             <img 
-               src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" 
-               alt="SaaS Platform Interface" 
-               className="rounded-[36px] grayscale hover:grayscale-0 transition-all duration-1000"
-             />
+            <div className="rounded-[36px] overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-500 to-cyan-500 p-8 lg:p-12 min-h-[280px] lg:min-h-[360px] flex items-end">
+              <div className="bg-white/90 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl px-5 py-4 shadow-lg border border-white/50 dark:border-slate-700/60 max-w-xs">
+                <p className="text-[10px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-300">Dashboard Preview</p>
+                <p className="text-slate-900 dark:text-white text-sm font-bold mt-1">Citas, clientes y disponibilidad en un solo lugar.</p>
+              </div>
+            </div>
           </div>
         </div>
       </main>
